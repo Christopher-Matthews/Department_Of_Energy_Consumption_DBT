@@ -1,0 +1,21 @@
+department_of_energy_consumption:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "dept_of_energy_test"
+      location: "{{ env_var('BQ_LOCATION', 'US') }}"
+      threads: 1
+      keyfile: "{{ env_var('GCP_KEYFILE', '.gcp_user_creds.json') }}"
+      priority: interactive
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "dept_of_energy"
+      location: "{{ env_var('BQ_LOCATION', 'US') }}"
+      threads: 1
+      keyfile: "{{ env_var('GCP_KEYFILE', '.gcp_user_creds.json') }}"
+      priority: interactive

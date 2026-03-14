@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: dept_of_energy
+    description: ""
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: "dept_of_energy"
+    tables:
+      - name: raw_sales
+        description: "Data from the API: https://www.eia.gov/developer/. The dataset give monthly electricity retail sales data by state."
+        columns:
+          - name: stateId
+            description: "State/region abbreviation. Ex: CA or NY"
+          - name: stateDescription
+            description: "State/Region full name. Ex: California"
+          - name: period
+            description: "Month of retail sales measurement. This dataset is usually 2-4 months behind the current month as reporting data from the federal government lags."
+          - name: sales
+            description: "Electricity sold to ultimate customers."
+          - name: salesUnits
+            description: "Unit of electricity sold to ultimate customers."
+          - name: loaded_at
+            description: "date and time data was loaded into the database or updated (UTC)"
