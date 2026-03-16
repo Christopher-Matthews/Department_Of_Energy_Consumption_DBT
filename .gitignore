@@ -1,3 +1,6 @@
 .env
 .venv/
 .gcp_user_creds.json
+dbt_packages/
+logs/
+profiles/.user.yml
