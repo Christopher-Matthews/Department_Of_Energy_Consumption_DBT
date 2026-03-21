@@ -18,12 +18,10 @@ A weekly workflow runs `dbt build --target prod` every Sunday at midnight UTC.
 
 **Required secrets** (Repository → Settings → Secrets and variables → Actions):
 
-| Secret         | Description                                                              |
-|----------------|--------------------------------------------------------------------------|
-| `GCP_PROJECT_ID` | Your Google Cloud project ID                                           |
-| `GCP_SA_KEY`     | Base64-encoded service account JSON (see below)                        |
-
-To create `GCP_SA_KEY`: run `base64 -i .gcp_user_creds.json | tr -d '\n'` (macOS) or `base64 -w 0 .gcp_user_creds.json` (Linux), then paste the output as the secret value.
+| Secret         | Description                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| `GCP_PROJECT_ID` | Your Google Cloud project ID                                              |
+| `GCP_SA_KEY`     | Raw JSON content of your service account key file (copy/paste the entire file) |
 
 You can manually trigger the workflow from the Actions tab (Run workflow).
 

@@ -8,7 +8,7 @@ department_of_energy_consumption:
       dataset: "dept_of_energy_test"
       location: "{{ env_var('BQ_LOCATION', 'US') }}"
       threads: 1
-      keyfile: "{{ env_var('GCP_KEYFILE', '.gcp_user_creds.json') }}"
+      keyfile: "{{ env_var('GCP_KEYFILE', env_var('GOOGLE_APPLICATION_CREDENTIALS', '.gcp_user_creds.json')) }}"
       priority: interactive
     prod:
       type: bigquery
@@ -17,5 +17,5 @@ department_of_energy_consumption:
       dataset: "dept_of_energy"
       location: "{{ env_var('BQ_LOCATION', 'US') }}"
       threads: 1
-      keyfile: "{{ env_var('GCP_KEYFILE', '.gcp_user_creds.json') }}"
+      keyfile: "{{ env_var('GCP_KEYFILE', env_var('GOOGLE_APPLICATION_CREDENTIALS', '.gcp_user_creds.json')) }}"
       priority: interactive
