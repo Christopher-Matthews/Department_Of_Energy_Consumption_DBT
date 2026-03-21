@@ -12,6 +12,19 @@ It includes:
 - `prod` target writes dbt models to `dept_of_energy`
 - Source raw tables remain in `dept_of_energy`
 
+## CI / GitHub Actions
+
+A weekly workflow runs `dbt build --target prod` every Sunday at midnight UTC.
+
+**Required secrets** (Repository → Settings → Secrets and variables → Actions):
+
+| Secret         | Description                                           |
+|----------------|-------------------------------------------------------|
+| `GCP_PROJECT_ID` | Your Google Cloud project ID                        |
+| `GCP_SA_KEY`     | Full JSON content of your BigQuery service account key file |
+
+You can manually trigger the workflow from the Actions tab (Run workflow).
+
 ## Common Commands
 
 - Virtual Env:
