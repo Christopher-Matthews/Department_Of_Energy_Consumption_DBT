@@ -2,22 +2,49 @@ version: 2
 
 sources:
   - name: dept_of_energy
-    description: ""
+    description: "schema to house department of energy data."
+    config:
+      meta:
+        ai_context: "This source comes from the U.S. EIA developer API. Data is monthly electricity
+          retail sales by state and usually lags the current month by 2–4 months.
+          stateId uses postal abbreviations like CA and NY. loaded_at is the UTC ingestion
+          timestamp, not the federal reporting month."
     database: "{{ env_var('GCP_PROJECT_ID') }}"
     schema: "dept_of_energy"
     tables:
       - name: raw_sales
         description: "Data from the API: https://www.eia.gov/developer/. The dataset give monthly electricity retail sales data by state."
+        config:
+          meta:
+            ai_context: "raw_sales is a raw ingestion table. It may contain source-system naming
+              conventions that are cleaned later in staging models."
+            freshness_note: "Dataset is usually 2-4 months behind real-time, the api is scanned weekly for new data."
         columns:
           - name: stateId
-            description: "State/region abbreviation. Ex: CA or NY"
+            description: "State/region abbreviation. Ex: CA or NY or US or PNW"
+            config:
+              meta:
+                caveats: "DC is counted as a US state and is aggregated in the US region code with the other 50 states."
           - name: stateDescription
             description: "State/Region full name. Ex: California"
+            config:
+              meta:
+                ai_context: "Includes states, regions like pacific north west and even the entire US represented as 'US'"
           - name: period
-            description: "Month of retail sales measurement. This dataset is usually 2-4 months behind the current month as reporting data from the federal government lags."
+            description: "Month of retail sales measurement."
+            config:
+              meta:
+                ai_context: "Represents reporting month, not ingestion date."
+                business_definition: "Month of retail sales measurement."
+                caveats: "This dataset is usually 2-4 months behind the current month as reporting data from the federal government lags."
           - name: sales
             description: "Electricity sold to ultimate customers."
           - name: salesUnits
             description: "Unit of electricity sold to ultimate customers."
           - name: loaded_at
             description: "date and time data was loaded into the database or updated (UTC)"
+            config:
+              meta:
+                ai_context: "Warehouse ingestion or update timestamp in UTC."
+                business_definition: "date and time data was loaded into the database or updated (UTC)"
+                caveats: "only last 4 months are retreived from API for update"

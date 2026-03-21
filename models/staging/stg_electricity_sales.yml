@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: stg_electricity_sales
+    description: ""
+    config:
+      meta:
+        ai_context: ""
+        business_definition: ""
+        caveats: ""
+    columns:
+      - name: ELECTRICITY_SALES_KEY
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+        data_tests:
+          - unique
+          - not_null
+
+      - name: STATE_REGION_ID
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+        data_tests:
+          - not_null
+
+      - name: STATE_REGION
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: SALES_MONTH
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+        data_tests:
+          - not_null
+
+      - name: ELECTRICITY_SALES
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+
+      - name: SALES_UNIT
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: SALES_UNIT_DESCRIPTION
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: IS_US_STATE_SALES
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: IS_REGIONAL_SALES
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: IS_US_SALES
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: IS_UNCLASSIFIED_STATE_ID
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
+
+      - name: RECORD_LAST_UPDATED
+        description: ""
+        config:
+          meta:
+            ai_context: ""
+            business_definition: ""
+            caveats: ""
