@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_electricity_sales
-    description: ""
+    description: "clean view for downstream modeling and aggregates."
     config:
       meta:
         ai_context: ""
@@ -10,108 +10,121 @@ models:
         caveats: ""
     columns:
       - name: ELECTRICITY_SALES_KEY
-        description: ""
+        description: "unique row level key for electricity sales."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "composite key of Month of sales and state/region abbreviation
+              from the raw_sales table."
         data_tests:
           - unique
           - not_null
 
       - name: STATE_REGION_ID
-        description: ""
+        description: "2-4 letter abbreviations for US states, US aggregates and US
+          regions."
         config:
           meta:
             ai_context: ""
-            business_definition: ""
-            caveats: ""
+            business_definition: "2-4 letter abbreviations for US states, US aggregates and US
+              regions."
+            caveats: "DC is included by EIA as rolling up into their US total sales figure."
         data_tests:
           - not_null
 
       - name: STATE_REGION
-        description: ""
+        description: "Longform name of the state region or total us territory"
         config:
           meta:
             ai_context: ""
-            business_definition: ""
+            business_definition: "Longform name of the state region or total us territory"
             caveats: ""
 
       - name: SALES_MONTH
         description: ""
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "Sales data lags 2-4 months."
+            business_definition: "Month of retail sales"
+            caveats: "This is the month of sales not the month of data injestion."
         data_tests:
           - not_null
 
       - name: ELECTRICITY_SALES
-        description: ""
+        description: "Aggregate retail sales of electricity for a given region/state"
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "Total monthly sales of electricity."
+            business_definition: "Total Monthly Retail Electricity Sales."
+            caveats: "Use SALES_UNIT column for scale of data. US sales is an aggregate of 
+              states which includes DC and also an aggregate of region codes that are not
+              us states."
         data_tests:
           - dbt_utils.expression_is_true:
               arguments:
                 expression: "> 0"
 
       - name: SALES_UNIT
-        description: ""
+        description: "Unit of retail electricity sales."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "refrain from using this long form unit name to measure units, use the
+              SALES_UNIT_DESCRIPTION"
+            business_definition: "Full name of unit of measure of retail electicity sales by month."
+            caveats: "This method is not preferred when labeling data on graphs due to its length"
 
       - name: SALES_UNIT_DESCRIPTION
-        description: ""
+        description: "Abbreviated name of unit of measure of retail electicity sales by month."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
+            ai_context: "Preferred labeling method of Electricity Retail Sales."
+            business_definition: "Unit of Retail electricity sales"
             caveats: ""
 
       - name: IS_US_STATE_SALES
-        description: ""
+        description: "Flag column to indicate a US state."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "this column is 1 if the record is a US state, 0 if some other
+              classification"
+            business_definition: "50 US states + Washington DC."
+            caveats: "DC is included as a US state."
 
       - name: IS_REGIONAL_SALES
-        description: ""
+        description: "this column is 1 if the record is a US territory and 0
+          if any other territory."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
+            ai_context: "A US region is comprised of US states."
+            business_definition: "US regions"
             caveats: ""
 
       - name: IS_US_SALES
-        description: ""
+        description: "indicator column to signify the record is an aggregation of 
+          US states."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
+            ai_context: "Aggregate that matches summing up US regions or US States including
+              DC. 1 means the record is the total aggregation of US states or Regions."
+            business_definition: "incidator to flag Total US Energy sales"
             caveats: ""
 
       - name: IS_UNCLASSIFIED_STATE_ID
         description: ""
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
-            caveats: ""
+            ai_context: "If this column = 1 for any records alert a stakeholder. that
+              means a region or state is not classified or there is bad data."
+            business_definition: "Unaccounted for state or region in staging view."
+            caveats: "Test is run on this through:
+              stg_electricity_sales_unclassified_min_zero.sql"
 
       - name: RECORD_LAST_UPDATED
-        description: ""
+        description: "UTC timestamp when record inserted or updated."
         config:
           meta:
-            ai_context: ""
-            business_definition: ""
+            ai_context: "UTC time. Doesn't signify a change necessarily. If duplicate
+              data is pulled from the API and matched during the merge process the
+              timestamp is updated. Timestamp is updated if a new record is found as well
+              and inserted."
+            business_definition: "UTC time record was last touched."
             caveats: ""
