@@ -14,6 +14,8 @@ It includes:
 
 ## Common Commands
 
+- Virtual Env:
+  `source .venv/bin/activate`
 - Local dev run:
   `dbt run --target dev --profiles-dir profiles`
 - Local dev tests:

@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: us_electricity_sales
+    description: "Analytics-ready US electricity sales mart built from staging."
+    config:
+      meta:
+        ai_context: ""
+        business_definition: ""
+    columns:
+      - name: ELECTRICITY_SALES_KEY
+        description: "Unique row level key for electricity sales."
+        config:
+          meta:
+            ai_context: "Composite key of month of sales and state/region abbreviation from the raw_sales table."
+            business_definition: "Unique row level key for electricity sales."
+            caveats: ""
+        data_tests:
+          - unique
+          - not_null
+
+      - name: STATE_REGION_ID
+        description: "2-4 letter abbreviations for US states, US aggregates and US regions."
+        config:
+          meta:
+            ai_context: ""
+            business_definition: "2-4 letter abbreviations for US states, US aggregates and US regions."
+            caveats: "DC is included by EIA as rolling up into their US total sales figure."
+
+      - name: STATE_REGION
+        description: "Longform name of the state region or total US territory."
+        config:
+          meta:
+            ai_context: ""
+            business_definition: "Longform name of the state region or total US territory."
+            caveats: ""
+
+      - name: SALES_MONTH
+        description: "Month of retail sales measurement."
+        config:
+          meta:
+            ai_context: "Sales data lags 2-4 months."
+            business_definition: "Month of retail sales."
+            caveats: "This is the month of sales not the month of data ingestion."
+
+      - name: ELECTRICITY_SALES
+        description: "Aggregate retail sales of electricity for a given region/state."
+        config:
+          meta:
+            ai_context: "Total monthly sales of electricity."
+            business_definition: "Total Monthly Retail Electricity Sales."
+            caveats: "Use SALES_UNIT_DESCRIPTION column for scale of data."
+
+      - name: SALES_UNIT_DESCRIPTION
+        description: "Abbreviated name of unit of measure of retail electricity sales by month."
+        config:
+          meta:
+            ai_context: "Preferred labeling method of Electricity Retail Sales."
+            business_definition: "Unit of Retail electricity sales."
+            caveats: ""
