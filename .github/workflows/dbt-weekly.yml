@@ -28,7 +28,7 @@ jobs:
 
       - name: Create GCP credentials
         run: |
-          printf '%s' "$GCP_SA_KEY" > gcp_keyfile.json
+          echo "$GCP_SA_KEY" | base64 -d > gcp_keyfile.json
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
